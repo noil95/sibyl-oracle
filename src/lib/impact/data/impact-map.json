@@ -1,0 +1,106 @@
+{
+  "John Fetterman": {
+    "tech": {
+      "template": "A Fetterman hold has a {score}% chance of maintaining current tech regulation levels, keeping the startup environment stable in Pennsylvania and nationally.",
+      "severity": "medium",
+      "direction": "neutral"
+    },
+    "healthcare": {
+      "template": "Fetterman's continued advocacy for healthcare expansion has a {score}% likelihood, potentially expanding ACA coverage affecting healthcare workers and patients.",
+      "severity": "high",
+      "direction": "positive"
+    },
+    "finance": {
+      "template": "A Fetterman hold carries a {score}% probability of pushing stricter Wall Street regulation, which could reshape compliance requirements in financial services.",
+      "severity": "high",
+      "direction": "negative"
+    },
+    "manufacturing": {
+      "template": "With {score}% probability, Fetterman's pro-union manufacturing stance could strengthen worker protections and reshape factory economics in the Rust Belt.",
+      "severity": "high",
+      "direction": "positive"
+    },
+    "energy": {
+      "template": "There's a {score}% chance Fetterman's mixed energy stance maintains both fracking and clean energy incentives, creating uncertainty in the energy sector.",
+      "severity": "medium",
+      "direction": "neutral"
+    },
+    "education": {
+      "template": "A {score}% likelihood of Fetterman's education funding priorities could increase federal support for public schools and teacher salaries.",
+      "severity": "medium",
+      "direction": "positive"
+    },
+    "retail": {
+      "template": "Fetterman's minimum wage push has a {score}% probability of advancing, which would directly impact retail labor costs and hiring.",
+      "severity": "high",
+      "direction": "negative"
+    },
+    "government": {
+      "template": "With a {score}% win probability, Fetterman's stance on government spending could influence federal employee benefits and agency funding.",
+      "severity": "medium",
+      "direction": "neutral"
+    },
+    "agriculture": {
+      "template": "A Fetterman hold at {score}% probability may sustain current farm subsidy programs, providing stability for agricultural operations.",
+      "severity": "low",
+      "direction": "positive"
+    },
+    "other": {
+      "template": "This race outcome, currently at {score}% for Fetterman, could shift the Senate balance, affecting legislation across all sectors.",
+      "severity": "medium",
+      "direction": "neutral"
+    }
+  },
+  "Dave McCormick": {
+    "tech": {
+      "template": "A McCormick win at {score}% probability could bring lighter tech regulation and lower corporate taxes, potentially boosting tech sector investment.",
+      "severity": "medium",
+      "direction": "positive"
+    },
+    "healthcare": {
+      "template": "McCormick's market-based healthcare approach at {score}% likelihood could shift insurance dynamics and reduce regulatory burden on providers.",
+      "severity": "high",
+      "direction": "negative"
+    },
+    "finance": {
+      "template": "With {score}% probability, McCormick's Wall Street background signals potential deregulation that could reshape financial services profitability.",
+      "severity": "high",
+      "direction": "positive"
+    },
+    "manufacturing": {
+      "template": "A McCormick victory at {score}% could bring tariff-focused trade policy affecting manufacturing supply chains and domestic production.",
+      "severity": "high",
+      "direction": "neutral"
+    },
+    "energy": {
+      "template": "McCormick's pro-fossil-fuel stance at {score}% probability could accelerate drilling permits and reduce clean energy mandates.",
+      "severity": "high",
+      "direction": "positive"
+    },
+    "education": {
+      "template": "A {score}% McCormick win probability signals potential school choice expansion and shifts in federal education funding priorities.",
+      "severity": "medium",
+      "direction": "neutral"
+    },
+    "retail": {
+      "template": "McCormick's tax-cut agenda at {score}% likelihood could reduce corporate tax burden for retail chains while maintaining current minimum wage.",
+      "severity": "medium",
+      "direction": "positive"
+    },
+    "government": {
+      "template": "With {score}% probability, McCormick's smaller-government stance could lead to federal workforce reductions and agency restructuring.",
+      "severity": "high",
+      "direction": "negative"
+    },
+    "agriculture": {
+      "template": "A McCormick win at {score}% probability could reshape trade agreements affecting agricultural exports and farm subsidy structures.",
+      "severity": "medium",
+      "direction": "neutral"
+    },
+    "other": {
+      "template": "This race outcome, currently at {score}% for McCormick, could shift the Senate balance, affecting legislation across all sectors.",
+      "severity": "medium",
+      "direction": "neutral"
+    }
+  }
+}
