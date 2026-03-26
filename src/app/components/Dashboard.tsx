@@ -109,8 +109,8 @@ export default function Dashboard() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-32 gap-4">
-        <div className="animate-spin w-10 h-10 border-2 border-white/10 border-t-purple-500 rounded-full" />
-        <p className="text-sm text-white/30">Loading predictions...</p>
+        <div className="animate-spin w-8 h-8 border-2 border-[var(--border-primary)] border-t-[var(--accent-purple)] rounded-full" />
+        <p className="text-sm text-[var(--text-tertiary)]">Loading predictions...</p>
       </div>
     );
   }
@@ -120,25 +120,25 @@ export default function Dashboard() {
   );
 
   return (
-    <div className="space-y-8 sm:space-y-10">
+    <div className="space-y-8">
       {/* Election header */}
       <div className="text-center space-y-3">
-        <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-white via-white to-white/60 bg-clip-text text-transparent">
+        <h2 className="text-2xl font-bold text-[var(--text-primary)]">
           {electionName}
         </h2>
-        <div className="flex flex-wrap items-center justify-center gap-3 text-xs text-white/30">
-          <span className="bg-white/5 px-3 py-1 rounded-full border border-white/5">
+        <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-[var(--text-label)]">
+          <span className="bg-[var(--bg-card)] px-3 py-1 rounded-md border border-[var(--border-primary)]">
             {new Date(electionDate).toLocaleDateString("en-US", {
               year: "numeric",
               month: "long",
               day: "numeric",
             })}
           </span>
-          <span className="bg-white/5 px-3 py-1 rounded-full border border-white/5">
+          <span className="bg-[var(--bg-card)] px-3 py-1 rounded-md border border-[var(--border-primary)]">
             {daysUntil} days away
           </span>
           {lastUpdated && (
-            <span className="bg-white/5 px-3 py-1 rounded-full border border-white/5">
+            <span className="bg-[var(--bg-card)] px-3 py-1 rounded-md border border-[var(--border-primary)]">
               Updated {new Date(lastUpdated).toLocaleTimeString()}
             </span>
           )}
@@ -161,16 +161,14 @@ export default function Dashboard() {
         })}
       </div>
 
-      {/* Data sources badge */}
+      {/* Data sources */}
       <div className="flex justify-center">
-        <div className="flex items-center gap-4 bg-white/[0.02] border border-white/5 rounded-full px-5 py-2">
-          <span className="text-[10px] uppercase tracking-wider text-white/20 font-medium">
-            Sources
-          </span>
+        <div className="flex items-center gap-3 text-xs text-[var(--text-label)]">
+          <span className="uppercase tracking-wider text-[10px]">Sources</span>
           {["NewsAPI", "Reddit", "Polls"].map((source) => (
             <span
               key={source}
-              className="text-[10px] text-white/40 bg-white/5 px-2 py-0.5 rounded-full"
+              className="text-[10px] text-[var(--text-secondary)] bg-[var(--bg-card)] px-2 py-0.5 rounded-md border border-[var(--border-primary)]"
             >
               {source}
             </span>
@@ -191,18 +189,18 @@ export default function Dashboard() {
 
       {/* Score history charts */}
       <div className="space-y-4">
-        <h3 className="text-sm uppercase tracking-wider text-white/30 font-semibold">
+        <h3 className="text-xs uppercase tracking-wider text-[var(--text-label)] font-semibold">
           Prediction History
         </h3>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {candidates.map((candidate) => (
             <div
               key={candidate.id}
-              className="bg-white/[0.02] border border-white/5 rounded-2xl p-5"
+              className="bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-xl p-5"
             >
-              <h4 className="text-xs font-medium text-white/40 mb-3">
+              <h4 className="text-xs font-medium text-[var(--text-secondary)] mb-3">
                 {candidate.name}
-                <span className="ml-2 text-white/20">({candidate.party})</span>
+                <span className="ml-2 text-[var(--text-tertiary)]">({candidate.party})</span>
               </h4>
               <ScoreHistory
                 data={history[candidate.id] || []}
@@ -215,12 +213,12 @@ export default function Dashboard() {
       </div>
 
       {/* Personal impact */}
-      <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-5 sm:p-6 space-y-4">
+      <div className="bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-xl p-5 space-y-4">
         <div className="space-y-1">
-          <h3 className="text-sm uppercase tracking-wider text-white/30 font-semibold">
+          <h3 className="text-xs uppercase tracking-wider text-[var(--text-label)] font-semibold">
             Personal Impact Analysis
           </h3>
-          <p className="text-xs text-white/15">
+          <p className="text-xs text-[var(--text-tertiary)]">
             How this election outcome could affect your career and industry
           </p>
         </div>

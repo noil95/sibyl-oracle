@@ -1,7 +1,8 @@
-import DomainNav from "./components/DomainNav";
-import PredictionFeed from "./components/PredictionFeed";
+import DomainNav from "../components/DomainNav";
+import OracleScore from "../components/OracleScore";
+import ProfileEditor from "../components/ProfileEditor";
 
-export default function Home() {
+export default function ProfilePage() {
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] bg-subtle">
       <header className="border-b border-[var(--border-primary)] px-4 sm:px-6 py-4 sticky top-0 z-50 bg-[var(--bg-primary)]/95 backdrop-blur-sm">
@@ -16,7 +17,7 @@ export default function Home() {
                   Sibyl Oracle
                 </h1>
                 <p className="text-[10px] uppercase tracking-widest text-[var(--text-label)]">
-                  AI-Powered Predictions
+                  Your Profile
                 </p>
               </div>
             </div>
@@ -29,29 +30,27 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-        <div className="space-y-2 mb-8">
-          <h2 className="text-2xl font-bold text-[var(--text-primary)]">
-            Prediction Feed
-          </h2>
-          <p className="text-sm text-[var(--text-tertiary)]">
-            Real-time predictions across politics, economy, and tech
-          </p>
-        </div>
+      <main className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="space-y-4">
+            <h2 className="text-xs uppercase tracking-wider text-[var(--text-label)] font-semibold">
+              Oracle Score
+            </h2>
+            <div className="bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-xl p-6">
+              <OracleScore />
+            </div>
+          </div>
 
-        <PredictionFeed />
+          <div className="space-y-4">
+            <h2 className="text-xs uppercase tracking-wider text-[var(--text-label)] font-semibold">
+              Your Profile
+            </h2>
+            <div className="bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-xl p-6">
+              <ProfileEditor />
+            </div>
+          </div>
+        </div>
       </main>
-
-      <footer className="border-t border-[var(--border-primary)] px-4 sm:px-6 py-6 mt-8">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-[var(--text-label)]">
-            Sibyl Oracle — Predictions are probabilistic estimates, not guarantees.
-          </p>
-          <p className="text-xs text-[var(--text-label)]">
-            Powered by FRED, BLS, Yahoo Finance, CoinGecko, EIA, NewsAPI, and Reddit.
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }

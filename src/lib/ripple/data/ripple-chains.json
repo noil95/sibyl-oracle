@@ -1,0 +1,257 @@
+{
+  "chains": [
+    {
+      "id": "fed-rate-to-housing",
+      "name": "Rate Hike Housing Shock",
+      "emoji": "🏠",
+      "description": "Federal Reserve rate decisions cascade through mortgages to home prices and the stock market",
+      "nodes": [
+        { "slug": "fed-rate", "role": "trigger", "multiplier": 1.0, "lag_label": "", "explanation": "" },
+        { "slug": "housing-market", "role": "downstream", "multiplier": -0.7, "lag_label": "3–6 months", "explanation": "Higher rates increase mortgage costs, suppressing home demand and cooling prices" },
+        { "slug": "sp500-direction", "role": "downstream", "multiplier": -0.4, "lag_label": "1–3 months", "explanation": "Housing slowdown drags on REITs, homebuilder stocks, and consumer spending" }
+      ],
+      "personal_impact": {
+        "housing_owner": "Your home equity may {direction_word} as mortgage rate changes ripple through local markets. Estimated impact on home value: ~{impact_pct}%.",
+        "housing_renter": "As fewer people can afford to buy, rental demand may {inverse_direction_word}. Your rent could shift by ~{impact_pct}%.",
+        "default": "Housing market shifts affect cost of living and real estate investments by an estimated ~{impact_pct}%.",
+        "stocks_affected": ["RDFN", "ZG", "LEN", "DHI", "TOL"],
+        "crypto_affected": [],
+        "industry_weights": {
+          "Finance": 0.9,
+          "Real Estate": 0.95,
+          "Construction": 0.85,
+          "Retail": 0.5,
+          "Tech": 0.3,
+          "Healthcare": 0.2,
+          "Other": 0.3
+        }
+      }
+    },
+    {
+      "id": "inflation-squeeze",
+      "name": "Inflation Squeeze",
+      "emoji": "📈",
+      "description": "Rising inflation forces the Fed's hand on interest rates, sending investors rushing to gold",
+      "nodes": [
+        { "slug": "inflation-cpi", "role": "trigger", "multiplier": 1.0, "lag_label": "", "explanation": "" },
+        { "slug": "fed-rate", "role": "downstream", "multiplier": 0.8, "lag_label": "1–3 months", "explanation": "High inflation pressures the Fed to raise rates to cool the economy" },
+        { "slug": "gold-price", "role": "downstream", "multiplier": 0.5, "lag_label": "Immediate", "explanation": "Inflation fears drive investors to gold as a traditional safe-haven hedge" }
+      ],
+      "personal_impact": {
+        "housing_owner": "Rising inflation erodes purchasing power. Your fixed mortgage becomes relatively cheaper, but property taxes and insurance may {direction_word} ~{impact_pct}%.",
+        "housing_renter": "Inflation directly hits rent prices. Your housing costs could {direction_word} by ~{impact_pct}% over the next year.",
+        "default": "Inflation affects your purchasing power and savings. Real income impact: ~{impact_pct}%.",
+        "stocks_affected": ["GLD", "IAU", "NEM"],
+        "crypto_affected": ["BTC"],
+        "industry_weights": {
+          "Finance": 0.8,
+          "Retail": 0.85,
+          "Healthcare": 0.6,
+          "Manufacturing": 0.7,
+          "Energy": 0.6,
+          "Tech": 0.4,
+          "Other": 0.5
+        }
+      }
+    },
+    {
+      "id": "tech-layoff-cascade",
+      "name": "Tech Layoff Cascade",
+      "emoji": "💼",
+      "description": "Market downturns trigger cost-cutting layoffs, and companies use the cover to force return-to-office",
+      "nodes": [
+        { "slug": "sp500-direction", "role": "trigger", "multiplier": 1.0, "lag_label": "", "explanation": "" },
+        { "slug": "tech-layoffs", "role": "downstream", "multiplier": -0.6, "lag_label": "1–3 months", "explanation": "Falling markets pressure companies to cut costs — headcount is the biggest expense" },
+        { "slug": "remote-work", "role": "downstream", "multiplier": -0.5, "lag_label": "2–4 months", "explanation": "Companies use layoff cycles as leverage to push return-to-office mandates" }
+      ],
+      "personal_impact": {
+        "default": "Tech sector job security and remote work availability could shift ~{impact_pct}% based on market conditions.",
+        "housing_owner": "If remote work contracts, property values in remote-friendly areas may {inverse_direction_word} ~{impact_pct}%.",
+        "housing_renter": "Remote work changes could shift where people want to live. Your area's demand may {direction_word} ~{impact_pct}%.",
+        "stocks_affected": ["MSFT", "GOOG", "META", "AMZN", "ZM"],
+        "crypto_affected": [],
+        "industry_weights": {
+          "Tech": 0.95,
+          "Finance": 0.5,
+          "Healthcare": 0.3,
+          "Education": 0.4,
+          "Retail": 0.3,
+          "Other": 0.35
+        }
+      }
+    },
+    {
+      "id": "crypto-regulatory-domino",
+      "name": "Crypto Regulatory Domino",
+      "emoji": "⛓️",
+      "description": "Regulatory crackdowns suppress Bitcoin, and Ethereum follows with even higher volatility",
+      "nodes": [
+        { "slug": "crypto-regulation", "role": "trigger", "multiplier": 1.0, "lag_label": "", "explanation": "" },
+        { "slug": "bitcoin-direction", "role": "downstream", "multiplier": -0.7, "lag_label": "Days–weeks", "explanation": "SEC enforcement actions and new regulations directly suppress crypto trading and prices" },
+        { "slug": "ethereum-direction", "role": "downstream", "multiplier": -0.8, "lag_label": "Days", "explanation": "ETH follows BTC with higher beta — altcoins amplify Bitcoin's movements" }
+      ],
+      "personal_impact": {
+        "default": "Crypto market regulation could affect digital asset values by ~{impact_pct}%.",
+        "housing_renter": "Crypto market shifts are unlikely to directly affect your rent, but if you hold crypto, portfolio impact: ~{impact_pct}%.",
+        "housing_owner": "Crypto market shifts are unlikely to directly affect your home value, but portfolio impact if you hold crypto: ~{impact_pct}%.",
+        "stocks_affected": ["COIN", "MARA", "RIOT", "MSTR"],
+        "crypto_affected": ["BTC", "ETH", "SOL"],
+        "industry_weights": {
+          "Finance": 0.8,
+          "Tech": 0.5,
+          "Other": 0.2
+        }
+      }
+    },
+    {
+      "id": "ai-regulation-impact",
+      "name": "AI Regulation Job Impact",
+      "emoji": "🤖",
+      "description": "AI regulation reduces GPU demand and forces companies to restructure their AI teams",
+      "nodes": [
+        { "slug": "ai-regulation", "role": "trigger", "multiplier": 1.0, "lag_label": "", "explanation": "" },
+        { "slug": "nvidia-stock", "role": "downstream", "multiplier": -0.5, "lag_label": "1–2 months", "explanation": "Regulation could cap AI compute spending, directly hitting GPU demand and NVIDIA revenue" },
+        { "slug": "tech-layoffs", "role": "downstream", "multiplier": 0.4, "lag_label": "3–6 months", "explanation": "Companies restructure AI teams to comply with new rules — compliance costs lead to headcount cuts elsewhere" }
+      ],
+      "personal_impact": {
+        "default": "AI regulation could shift tech employment and AI investment by ~{impact_pct}%. AI-adjacent roles face the most uncertainty.",
+        "housing_owner": "If you're in a tech hub, AI regulation may affect local employment density, which could {inverse_direction_word} property values ~{impact_pct}%.",
+        "housing_renter": "AI regulation could shift tech hiring patterns. If you're in AI, job mobility changes by ~{impact_pct}%.",
+        "stocks_affected": ["NVDA", "AMD", "GOOG", "MSFT", "META"],
+        "crypto_affected": [],
+        "industry_weights": {
+          "Tech": 0.95,
+          "Education": 0.5,
+          "Finance": 0.4,
+          "Healthcare": 0.4,
+          "Government": 0.6,
+          "Other": 0.25
+        }
+      }
+    },
+    {
+      "id": "oil-dollar-gold",
+      "name": "Oil-Dollar-Gold Triangle",
+      "emoji": "🛢️",
+      "description": "Rising oil strengthens the dollar through petrodollar demand, which in turn suppresses gold prices",
+      "nodes": [
+        { "slug": "oil-price", "role": "trigger", "multiplier": 1.0, "lag_label": "", "explanation": "" },
+        { "slug": "dollar-strength", "role": "downstream", "multiplier": 0.5, "lag_label": "Weeks", "explanation": "Oil is priced in dollars — rising oil increases global demand for USD (petrodollar effect)" },
+        { "slug": "gold-price", "role": "downstream", "multiplier": -0.6, "lag_label": "Weeks", "explanation": "A strong dollar makes gold more expensive for foreign buyers, suppressing demand" }
+      ],
+      "personal_impact": {
+        "default": "Energy and commodity price shifts affect consumer costs. Gas and heating bills could shift ~{impact_pct}%.",
+        "housing_owner": "Energy costs directly affect your utility bills. Heating/cooling costs may {direction_word} ~{impact_pct}%.",
+        "housing_renter": "Energy costs may be passed through to rent. Utility costs could shift ~{impact_pct}%.",
+        "stocks_affected": ["XOM", "CVX", "COP", "GLD"],
+        "crypto_affected": [],
+        "industry_weights": {
+          "Energy": 0.95,
+          "Manufacturing": 0.7,
+          "Transportation": 0.85,
+          "Retail": 0.5,
+          "Other": 0.4
+        }
+      }
+    },
+    {
+      "id": "gdp-confidence",
+      "name": "GDP Growth Confidence Chain",
+      "emoji": "📊",
+      "description": "Strong GDP growth lifts equity markets and drives hiring, reducing unemployment",
+      "nodes": [
+        { "slug": "gdp-growth", "role": "trigger", "multiplier": 1.0, "lag_label": "", "explanation": "" },
+        { "slug": "sp500-direction", "role": "downstream", "multiplier": 0.7, "lag_label": "Immediate", "explanation": "GDP growth signals corporate revenue growth, lifting stock valuations" },
+        { "slug": "unemployment", "role": "downstream", "multiplier": -0.6, "lag_label": "3–6 months", "explanation": "Growing companies expand headcount — hiring increases, unemployment falls" }
+      ],
+      "personal_impact": {
+        "default": "GDP growth affects job opportunities and wage growth in your industry. Estimated impact: ~{impact_pct}%.",
+        "housing_owner": "Economic growth supports property values. Your home value could {direction_word} ~{impact_pct}%.",
+        "housing_renter": "A growing economy often pushes rents up as demand increases. Rent may {direction_word} ~{impact_pct}%.",
+        "stocks_affected": ["SPY", "QQQ", "DIA"],
+        "crypto_affected": [],
+        "industry_weights": {
+          "Finance": 0.8,
+          "Tech": 0.7,
+          "Manufacturing": 0.75,
+          "Retail": 0.7,
+          "Healthcare": 0.5,
+          "Other": 0.5
+        }
+      }
+    },
+    {
+      "id": "dollar-crypto-oil",
+      "name": "Dollar Strength Ripple",
+      "emoji": "💵",
+      "description": "A strong dollar drives emerging market investors to Bitcoin, while suppressing commodity prices",
+      "nodes": [
+        { "slug": "dollar-strength", "role": "trigger", "multiplier": 1.0, "lag_label": "", "explanation": "" },
+        { "slug": "bitcoin-direction", "role": "downstream", "multiplier": 0.4, "lag_label": "Weeks", "explanation": "In emerging markets with weak currencies, a strong dollar makes BTC attractive as an alternative store of value" },
+        { "slug": "oil-price", "role": "downstream", "multiplier": -0.3, "lag_label": "Weeks", "explanation": "Strong dollar makes oil more expensive globally, reducing demand and suppressing prices" }
+      ],
+      "personal_impact": {
+        "default": "Dollar strength affects import prices and international purchasing power. Impact on costs: ~{impact_pct}%.",
+        "housing_owner": "Dollar movements can affect imported building materials, shifting renovation and maintenance costs ~{impact_pct}%.",
+        "housing_renter": "A stronger dollar keeps import prices lower, slightly reducing inflation pressure on rent. Impact: ~{impact_pct}%.",
+        "stocks_affected": ["UUP", "FXE"],
+        "crypto_affected": ["BTC"],
+        "industry_weights": {
+          "Finance": 0.85,
+          "Manufacturing": 0.6,
+          "Tech": 0.4,
+          "Retail": 0.5,
+          "Other": 0.3
+        }
+      }
+    },
+    {
+      "id": "tesla-market-mood",
+      "name": "Tesla-Apple Market Mood",
+      "emoji": "🚗",
+      "description": "Tesla acts as a market sentiment barometer — when Tesla moves, mega-cap tech follows",
+      "nodes": [
+        { "slug": "tesla-stock", "role": "trigger", "multiplier": 1.0, "lag_label": "", "explanation": "" },
+        { "slug": "sp500-direction", "role": "downstream", "multiplier": 0.3, "lag_label": "Days", "explanation": "Tesla's outsized retail investor following makes it a leading indicator of market risk appetite" },
+        { "slug": "apple-stock", "role": "downstream", "multiplier": 0.5, "lag_label": "Days–weeks", "explanation": "Positive market sentiment lifts all mega-cap tech peers as sector rotation follows momentum" }
+      ],
+      "personal_impact": {
+        "default": "Mega-cap tech movements affect broad market indices and 401(k) performance. Portfolio impact: ~{impact_pct}%.",
+        "housing_owner": "Tech stock performance indirectly affects local economies in tech hubs. If you're in one, home values may shift ~{impact_pct}%.",
+        "housing_renter": "Tech sector health affects hiring and salaries. Your earning potential may shift ~{impact_pct}%.",
+        "stocks_affected": ["TSLA", "AAPL", "MSFT", "GOOG", "AMZN"],
+        "crypto_affected": [],
+        "industry_weights": {
+          "Tech": 0.85,
+          "Finance": 0.7,
+          "Other": 0.3
+        }
+      }
+    },
+    {
+      "id": "tiktok-tech-reshuffling",
+      "name": "TikTok Ban Tech Reshuffling",
+      "emoji": "📱",
+      "description": "A TikTok ban signals appetite for broader tech regulation, increasing compliance costs across the industry",
+      "nodes": [
+        { "slug": "tiktok-ban", "role": "trigger", "multiplier": 1.0, "lag_label": "", "explanation": "" },
+        { "slug": "ai-regulation", "role": "downstream", "multiplier": 0.4, "lag_label": "1–3 months", "explanation": "Banning a major platform signals political willingness to regulate tech — AI is next in line" },
+        { "slug": "tech-layoffs", "role": "downstream", "multiplier": 0.3, "lag_label": "3–6 months", "explanation": "New compliance requirements increase costs, leading companies to cut headcount elsewhere to compensate" }
+      ],
+      "personal_impact": {
+        "default": "Tech regulation shifts affect the broader industry. Job market impact in tech: ~{impact_pct}%.",
+        "housing_owner": "Tech regulation could cool hiring in tech hubs, affecting property demand ~{impact_pct}%.",
+        "housing_renter": "If you work in tech or content creation, regulatory shifts could affect job opportunities ~{impact_pct}%.",
+        "stocks_affected": ["META", "SNAP", "GOOG", "PINS"],
+        "crypto_affected": [],
+        "industry_weights": {
+          "Tech": 0.9,
+          "Media": 0.85,
+          "Advertising": 0.8,
+          "Government": 0.5,
+          "Other": 0.2
+        }
+      }
+    }
+  ]
+}

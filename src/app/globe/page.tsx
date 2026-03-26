@@ -1,9 +1,9 @@
-import DomainNav from "./components/DomainNav";
-import PredictionFeed from "./components/PredictionFeed";
+import DomainNav from "../components/DomainNav";
+import GlobeView from "../components/GlobeView";
 
-export default function Home() {
+export default function GlobePage() {
   return (
-    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] bg-subtle">
+    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
       <header className="border-b border-[var(--border-primary)] px-4 sm:px-6 py-4 sticky top-0 z-50 bg-[var(--bg-primary)]/95 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto flex flex-col gap-3">
           <div className="flex items-center justify-between">
@@ -16,7 +16,7 @@ export default function Home() {
                   Sibyl Oracle
                 </h1>
                 <p className="text-[10px] uppercase tracking-widest text-[var(--text-label)]">
-                  AI-Powered Predictions
+                  Global Prediction Map
                 </p>
               </div>
             </div>
@@ -32,26 +32,32 @@ export default function Home() {
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
         <div className="space-y-2 mb-8">
           <h2 className="text-2xl font-bold text-[var(--text-primary)]">
-            Prediction Feed
+            Global Prediction Globe
           </h2>
           <p className="text-sm text-[var(--text-tertiary)]">
-            Real-time predictions across politics, economy, and tech
+            Real-time prediction hotspots. Hover over points to see live scores.
           </p>
         </div>
 
-        <PredictionFeed />
+        <GlobeView fullScreen />
+
+        {/* Stats */}
+        <div className="mt-8 grid grid-cols-3 gap-4 max-w-lg mx-auto">
+          {[
+            { label: "Critical", color: "text-[var(--status-down)]", dotColor: "bg-[var(--status-down)]", count: 3 },
+            { label: "Warning", color: "text-[var(--status-neutral)]", dotColor: "bg-[var(--status-neutral)]", count: 4 },
+            { label: "Stable", color: "text-[var(--status-up)]", dotColor: "bg-[var(--status-up)]", count: 3 },
+          ].map((stat) => (
+            <div key={stat.label} className="bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-xl p-4 text-center">
+              <div className="flex items-center justify-center gap-1.5 mb-1">
+                <div className={`w-2 h-2 rounded-full ${stat.dotColor}`} />
+                <span className="text-xs text-[var(--text-label)]">{stat.label}</span>
+              </div>
+              <div className={`text-lg font-bold ${stat.color}`}>{stat.count}</div>
+            </div>
+          ))}
+        </div>
       </main>
-
-      <footer className="border-t border-[var(--border-primary)] px-4 sm:px-6 py-6 mt-8">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-[var(--text-label)]">
-            Sibyl Oracle — Predictions are probabilistic estimates, not guarantees.
-          </p>
-          <p className="text-xs text-[var(--text-label)]">
-            Powered by FRED, BLS, Yahoo Finance, CoinGecko, EIA, NewsAPI, and Reddit.
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }

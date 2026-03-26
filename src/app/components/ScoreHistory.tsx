@@ -32,8 +32,8 @@ export default function ScoreHistory({
   party,
 }: ScoreHistoryProps) {
   const colors = PARTY_COLORS[party] ?? {
-    stroke: "#6b7280",
-    fill: "url(#grayGradient)",
+    stroke: "#7c3aed",
+    fill: "url(#purpleGradient)",
   };
 
   const chartData = data.map((d) => ({
@@ -48,10 +48,10 @@ export default function ScoreHistory({
 
   if (chartData.length === 0) {
     return (
-      <div className="flex items-center justify-center py-12 text-white/20 text-sm">
+      <div className="flex items-center justify-center py-12 text-[var(--text-tertiary)] text-sm">
         <div className="text-center space-y-2">
-          <div className="text-2xl">---</div>
-          <p>History builds as predictions update every 15 minutes</p>
+          <div className="text-2xl text-[var(--text-label)]">---</div>
+          <p>History builds as predictions update</p>
         </div>
       </div>
     );
@@ -63,47 +63,46 @@ export default function ScoreHistory({
         <AreaChart data={chartData} margin={{ top: 5, right: 5, bottom: 5, left: -15 }}>
           <defs>
             <linearGradient id="blueGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.3} />
+              <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.2} />
               <stop offset="100%" stopColor="#3b82f6" stopOpacity={0} />
             </linearGradient>
             <linearGradient id="redGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#ef4444" stopOpacity={0.3} />
+              <stop offset="0%" stopColor="#ef4444" stopOpacity={0.2} />
               <stop offset="100%" stopColor="#ef4444" stopOpacity={0} />
             </linearGradient>
-            <linearGradient id="grayGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#6b7280" stopOpacity={0.3} />
-              <stop offset="100%" stopColor="#6b7280" stopOpacity={0} />
+            <linearGradient id="purpleGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#7c3aed" stopOpacity={0.2} />
+              <stop offset="100%" stopColor="#7c3aed" stopOpacity={0} />
             </linearGradient>
           </defs>
           <XAxis
             dataKey="time"
-            stroke="#ffffff10"
-            tick={{ fill: "#ffffff25", fontSize: 10 }}
+            stroke="var(--border-primary)"
+            tick={{ fill: "var(--text-label)", fontSize: 10 }}
             tickLine={false}
             axisLine={false}
           />
           <YAxis
             domain={[0, 100]}
-            stroke="#ffffff10"
-            tick={{ fill: "#ffffff25", fontSize: 10 }}
+            stroke="var(--border-primary)"
+            tick={{ fill: "var(--text-label)", fontSize: 10 }}
             tickLine={false}
             axisLine={false}
             tickFormatter={(v) => `${v}%`}
           />
           <ReferenceLine
             y={50}
-            stroke="#ffffff10"
+            stroke="var(--border-primary)"
             strokeDasharray="3 3"
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: "rgba(15, 15, 35, 0.95)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              borderRadius: "12px",
-              color: "#fff",
+              backgroundColor: "var(--bg-elevated)",
+              border: "1px solid var(--border-primary)",
+              borderRadius: "8px",
+              color: "var(--text-primary)",
               fontSize: "12px",
               padding: "8px 12px",
-              backdropFilter: "blur(8px)",
             }}
             formatter={(value) => [`${value}%`, candidateName]}
           />

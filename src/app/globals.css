@@ -1,8 +1,36 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a0a1a;
-  --foreground: #ededed;
+  /* Backgrounds */
+  --bg-primary: #0b0b14;
+  --bg-card: #12121e;
+  --bg-card-hover: #181828;
+  --bg-elevated: #1a1a2e;
+  --bg-input: #16162a;
+
+  /* Borders */
+  --border-primary: #1e1e3a;
+  --border-hover: #2a2a4a;
+  --border-active: #7c3aed;
+
+  /* Text */
+  --text-primary: #f0f0f5;
+  --text-secondary: #8888a0;
+  --text-tertiary: #55556a;
+  --text-label: #6b6b85;
+
+  /* Accent */
+  --accent-purple: #7c3aed;
+  --accent-purple-dim: rgba(124, 58, 237, 0.2);
+
+  /* Status */
+  --status-up: #22c55e;
+  --status-down: #ef4444;
+  --status-neutral: #eab308;
+
+  /* Legacy compat */
+  --background: var(--bg-primary);
+  --foreground: var(--text-primary);
 }
 
 @theme inline {
@@ -13,58 +41,47 @@
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--bg-primary);
+  color: var(--text-primary);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
-/* Glow effects */
-.glow-blue {
-  box-shadow: 0 0 30px rgba(59, 130, 246, 0.15), 0 0 60px rgba(59, 130, 246, 0.05);
-}
-
-.glow-red {
-  box-shadow: 0 0 30px rgba(239, 68, 68, 0.15), 0 0 60px rgba(239, 68, 68, 0.05);
-}
-
-/* Animated gradient background */
-.bg-mesh {
-  background:
-    radial-gradient(ellipse at 20% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 50%, rgba(239, 68, 68, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 0%, rgba(139, 92, 246, 0.06) 0%, transparent 50%);
+/* Subtle background — single gradient, no mesh */
+.bg-subtle {
+  background: radial-gradient(ellipse at 50% 0%, rgba(124, 58, 237, 0.04) 0%, transparent 60%);
 }
 
 /* Pulse animation for live indicator */
-@keyframes pulse-glow {
-  0%, 100% { opacity: 1; box-shadow: 0 0 4px rgba(34, 197, 94, 0.6); }
-  50% { opacity: 0.6; box-shadow: 0 0 12px rgba(34, 197, 94, 0.8); }
+@keyframes pulse-live {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
 }
 
 .live-dot {
-  animation: pulse-glow 2s ease-in-out infinite;
+  animation: pulse-live 2s ease-in-out infinite;
 }
 
 /* Score counter animation */
 @keyframes count-up {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .score-animate {
-  animation: count-up 0.6s ease-out;
+  animation: count-up 0.5s ease-out;
 }
 
-/* Card hover effect */
+/* Card hover — subtle border change only */
 .card-hover {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
 .card-hover:hover {
-  transform: translateY(-2px);
+  border-color: var(--border-hover);
+  background-color: var(--bg-card-hover);
 }
 
-/* Smooth scrollbar */
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -74,10 +91,19 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--border-primary);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--border-hover);
+}
+
+/* Hide scrollbar for nav */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

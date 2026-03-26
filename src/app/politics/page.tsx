@@ -1,7 +1,7 @@
-import DomainNav from "./components/DomainNav";
-import PredictionFeed from "./components/PredictionFeed";
+import DomainNav from "../components/DomainNav";
+import Dashboard from "../components/Dashboard";
 
-export default function Home() {
+export default function PoliticsPage() {
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] bg-subtle">
       <header className="border-b border-[var(--border-primary)] px-4 sm:px-6 py-4 sticky top-0 z-50 bg-[var(--bg-primary)]/95 backdrop-blur-sm">
@@ -16,7 +16,7 @@ export default function Home() {
                   Sibyl Oracle
                 </h1>
                 <p className="text-[10px] uppercase tracking-widest text-[var(--text-label)]">
-                  AI-Powered Predictions
+                  Political Predictions
                 </p>
               </div>
             </div>
@@ -29,26 +29,17 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-        <div className="space-y-2 mb-8">
-          <h2 className="text-2xl font-bold text-[var(--text-primary)]">
-            Prediction Feed
-          </h2>
-          <p className="text-sm text-[var(--text-tertiary)]">
-            Real-time predictions across politics, economy, and tech
-          </p>
-        </div>
-
-        <PredictionFeed />
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+        <Dashboard />
       </main>
 
       <footer className="border-t border-[var(--border-primary)] px-4 sm:px-6 py-6 mt-8">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-[var(--text-label)]">
             Sibyl Oracle — Predictions are probabilistic estimates, not guarantees.
           </p>
           <p className="text-xs text-[var(--text-label)]">
-            Powered by FRED, BLS, Yahoo Finance, CoinGecko, EIA, NewsAPI, and Reddit.
+            Updated every 15 minutes from news, social media, and polling data.
           </p>
         </div>
       </footer>
