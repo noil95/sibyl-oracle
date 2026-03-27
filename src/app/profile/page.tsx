@@ -4,7 +4,7 @@ import ProfileEditor from "../components/ProfileEditor";
 
 export default function ProfilePage() {
   return (
-    <AppShell subtitle="Your Profile" maxWidth="max-w-3xl">
+    <AppShell maxWidth="max-w-3xl">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="space-y-3">
           <h2 className="text-[10px] uppercase tracking-widest text-[var(--text-label)] font-semibold">

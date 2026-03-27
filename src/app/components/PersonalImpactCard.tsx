@@ -13,9 +13,9 @@ interface PersonalImpactCardProps {
 }
 
 const severityConfig = {
-  low: { label: "Low Impact", color: "text-[var(--status-up)]" },
-  medium: { label: "Medium Impact", color: "text-[var(--status-neutral)]" },
-  high: { label: "High Impact", color: "text-[var(--status-down)]" },
+  low: { label: "Low Impact", color: "text-[var(--status-up)]", bg: "bg-[var(--status-up-dim)]" },
+  medium: { label: "Medium Impact", color: "text-[var(--status-neutral)]", bg: "bg-[var(--status-neutral-dim)]" },
+  high: { label: "High Impact", color: "text-[var(--status-down)]", bg: "bg-[var(--status-down-dim)]" },
 };
 
 const directionConfig = {
@@ -36,54 +36,44 @@ export default function PersonalImpactCard({
   const dir = directionConfig[direction];
 
   return (
-    <div className="bg-[var(--bg-card)] border-2 border-[var(--accent-purple)]/30 rounded-xl p-5">
-      {/* Header */}
-      <div className="flex items-center gap-2 mb-4">
-        <span className="text-[10px] uppercase tracking-widest text-[var(--accent-purple)] font-semibold">
-          Your Impact
-        </span>
+    <div className="bg-[var(--bg-card)] border border-[var(--accent-purple)]/20 rounded-lg p-5">
+      <div className="text-[10px] font-semibold uppercase tracking-widest text-[var(--accent-purple)] mb-3">
+        Your Impact
       </div>
 
-      {/* Headline */}
-      <h3 className="text-base font-semibold text-[var(--text-primary)] mb-2">{headline}</h3>
+      <h3 className="text-[15px] font-semibold text-white mb-2">{headline}</h3>
+      <p className="text-[13px] text-[var(--text-secondary)] leading-relaxed mb-4">{detail}</p>
 
-      {/* Detail */}
-      <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-4">{detail}</p>
-
-      {/* Badges */}
-      <div className="flex flex-wrap items-center gap-2 mb-4">
-        <span className={`text-[10px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-md bg-[var(--bg-elevated)] ${sev.color}`}>
+      {/* Tags */}
+      <div className="flex items-center gap-2 mb-4">
+        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded ${sev.color} ${sev.bg}`}>
           {sev.label}
         </span>
-        <span className={`text-[10px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-md bg-[var(--bg-elevated)] ${dir.color}`}>
+        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded ${dir.color} bg-[var(--bg-elevated)]`}>
           {dir.label}
         </span>
       </div>
 
-      {/* Affected holdings */}
+      {/* Holdings */}
       {affectedHoldings.length > 0 && (
         <div className="mb-4">
-          <span className="text-[10px] uppercase tracking-wider text-[var(--text-label)] font-medium">
+          <span className="text-[10px] text-[var(--text-label)] uppercase tracking-wider block mb-1.5">
             Your Holdings Affected
           </span>
-          <div className="flex flex-wrap gap-1.5 mt-1.5">
-            {affectedHoldings.map((holding) => (
-              <span
-                key={holding}
-                className="text-[11px] font-mono font-medium text-[var(--accent-purple)] bg-[var(--accent-purple-dim)] px-2 py-0.5 rounded-md"
-              >
-                {holding}
+          <div className="flex flex-wrap gap-1.5">
+            {affectedHoldings.map((h) => (
+              <span key={h} className="text-[11px] font-mono font-medium text-[var(--accent-purple)] bg-[var(--accent-purple-dim)] px-2 py-0.5 rounded">
+                {h}
               </span>
             ))}
           </div>
         </div>
       )}
 
-      {/* Profile CTA */}
       {!hasProfile && (
         <Link
           href="/profile"
-          className="block text-center mt-3 py-2 px-4 rounded-lg bg-[var(--accent-purple-dim)] text-[var(--accent-purple)] text-xs font-medium hover:bg-[var(--accent-purple)]/30 transition-colors"
+          className="block text-center py-2 rounded-lg bg-[var(--accent-purple)] text-white text-[12px] font-medium hover:bg-[var(--accent-purple-hover)] transition-colors"
         >
           Set up your profile for personalized impact
         </Link>

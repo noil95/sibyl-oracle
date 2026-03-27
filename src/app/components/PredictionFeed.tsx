@@ -56,9 +56,8 @@ export default function PredictionFeed() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 gap-4">
-        <div className="animate-spin w-6 h-6 border-2 border-[var(--border-primary)] border-t-[var(--accent-purple)] rounded-full" />
-        <p className="text-xs text-[var(--text-tertiary)]">Loading predictions...</p>
+      <div className="flex items-center justify-center py-20">
+        <div className="animate-spin w-5 h-5 border-2 border-[var(--border-primary)] border-t-[var(--accent-purple)] rounded-full" />
       </div>
     );
   }
@@ -79,52 +78,50 @@ export default function PredictionFeed() {
     return 0;
   });
 
-  const filters = [
-    { key: "all" as const, label: "All" },
-    { key: "economic" as const, label: "Economy" },
-    { key: "tech" as const, label: "Tech" },
-  ];
-
   return (
-    <div className="space-y-6">
-      {/* Filter pills */}
-      <div className="flex items-center gap-1">
-        {filters.map((f) => (
+    <div>
+      {/* Tabs */}
+      <div className="flex items-center gap-0 border-b border-[var(--border-primary)] mb-6">
+        {[
+          { key: "all" as const, label: "All" },
+          { key: "economic" as const, label: "Economy" },
+          { key: "tech" as const, label: "Tech" },
+        ].map((f) => (
           <button
             key={f.key}
             onClick={() => setFilter(f.key)}
-            className={`px-3 py-1.5 rounded-md text-[11px] font-medium uppercase tracking-wider transition-colors ${
+            className={`relative px-4 py-2.5 text-[13px] font-medium transition-colors ${
               filter === f.key
-                ? "bg-[var(--accent-purple-dim)] text-[var(--accent-purple)]"
-                : "text-[var(--text-label)] hover:text-[var(--text-secondary)] hover:bg-[var(--bg-card)]"
+                ? "text-white"
+                : "text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]"
             }`}
           >
             {f.label}
+            {filter === f.key && (
+              <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-[var(--accent-purple)]" />
+            )}
           </button>
         ))}
 
         <Link
           href="/politics"
-          className="px-3 py-1.5 rounded-md text-[11px] font-medium uppercase tracking-wider text-[var(--text-label)] hover:text-[var(--text-secondary)] hover:bg-[var(--bg-card)] transition-colors"
+          className="px-4 py-2.5 text-[13px] font-medium text-[var(--text-tertiary)] hover:text-[var(--text-secondary)] transition-colors"
         >
           Politics
         </Link>
-      </div>
 
-      {/* Count */}
-      <p className="text-[11px] text-[var(--text-label)]">
-        {sorted.length} prediction{sorted.length !== 1 ? "s" : ""}
-      </p>
+        <div className="ml-auto text-[12px] text-[var(--text-label)]">
+          {sorted.length} market{sorted.length !== 1 ? "s" : ""}
+        </div>
+      </div>
 
       {/* Grid */}
       {sorted.length === 0 ? (
-        <div className="text-center py-20">
-          <p className="text-[var(--text-tertiary)] text-sm">
-            No predictions yet. Run the cron job to start generating predictions.
-          </p>
+        <div className="text-center py-20 text-[var(--text-tertiary)] text-[14px]">
+          No predictions yet. Run the cron job to start generating data.
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {sorted.map((item) => (
             <GenericPredictionCard
               key={item.predictionType.id}

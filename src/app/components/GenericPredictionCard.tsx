@@ -12,75 +12,65 @@ interface GenericPredictionCardProps {
 }
 
 const directionConfig = {
-  up: { label: "Bullish", color: "text-[var(--status-up)]", bgColor: "bg-[var(--status-up-dim)]", barColor: "bg-[var(--status-up)]" },
-  down: { label: "Bearish", color: "text-[var(--status-down)]", bgColor: "bg-[var(--status-down-dim)]", barColor: "bg-[var(--status-down)]" },
-  stable: { label: "Neutral", color: "text-[var(--status-neutral)]", bgColor: "bg-[var(--status-neutral-dim)]", barColor: "bg-[var(--status-neutral)]" },
+  up: { label: "YES", color: "text-[var(--status-up)]", bg: "bg-[var(--status-up)]" },
+  down: { label: "NO", color: "text-[var(--status-down)]", bg: "bg-[var(--status-down)]" },
+  stable: { label: "HOLD", color: "text-[var(--status-neutral)]", bg: "bg-[var(--status-neutral)]" },
 };
 
 export default function GenericPredictionCard({
   name,
-  domain,
   score,
   direction,
   confidence,
   description,
 }: GenericPredictionCardProps) {
   const pct = Math.round(score * 100);
+  const inversePct = 100 - pct;
   const dir = directionConfig[direction];
-  const domainLabel = domain === "economic" ? "ECON" : "TECH";
 
   return (
-    <div className="bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-xl p-5 card-hover flex flex-col justify-between">
-      {/* Top section */}
-      <div>
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex-1 min-w-0 pr-3">
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-[9px] font-semibold uppercase tracking-widest text-[var(--text-label)] bg-[var(--bg-elevated)] px-1.5 py-0.5 rounded">
-                {domainLabel}
-              </span>
-            </div>
-            <h3 className="text-[13px] font-semibold text-[var(--text-primary)] leading-tight">{name}</h3>
-            {description && (
-              <p className="text-[11px] text-[var(--text-tertiary)] mt-1 line-clamp-2 leading-relaxed">
-                {description}
-              </p>
-            )}
-          </div>
+    <div className="bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-lg p-4 card-hover cursor-pointer">
+      {/* Title */}
+      <h3 className="text-[14px] font-medium text-white mb-1 leading-snug">{name}</h3>
+      {description && (
+        <p className="text-[12px] text-[var(--text-tertiary)] mb-4 line-clamp-1">
+          {description}
+        </p>
+      )}
 
-          <span className={`text-[10px] font-semibold px-2 py-1 rounded-md ${dir.color} ${dir.bgColor} uppercase tracking-wider`}>
-            {dir.label}
-          </span>
+      {/* Probability bar — Polymarket style */}
+      <div className="flex rounded-md overflow-hidden h-[36px] mb-3">
+        <div
+          className="flex items-center justify-center bg-[var(--status-up)]/20 transition-all duration-500"
+          style={{ width: `${pct}%`, minWidth: pct > 5 ? "40px" : "0" }}
+        >
+          {pct > 10 && (
+            <span className="text-[13px] font-semibold text-[var(--status-up)]">{pct}%</span>
+          )}
         </div>
-
-        {/* Score */}
-        <div className="flex items-baseline gap-1 mb-4">
-          <span className="text-3xl font-bold text-[var(--text-primary)] number-display score-animate">
-            {pct}
-          </span>
-          <span className="text-sm text-[var(--text-label)] font-medium">%</span>
+        <div
+          className="flex items-center justify-center bg-[var(--status-down)]/15 transition-all duration-500"
+          style={{ width: `${inversePct}%`, minWidth: inversePct > 5 ? "40px" : "0" }}
+        >
+          {inversePct > 10 && (
+            <span className="text-[13px] font-semibold text-[var(--status-down)]">{inversePct}%</span>
+          )}
         </div>
       </div>
 
-      {/* Bottom section */}
-      <div>
-        {/* Progress bar */}
-        <div className="h-[3px] bg-[var(--border-primary)] rounded-full overflow-hidden mb-3">
-          <div
-            className={`h-full rounded-full ${dir.barColor} transition-all duration-700`}
-            style={{ width: `${pct}%`, opacity: 0.8 }}
-          />
-        </div>
-
-        {/* Confidence */}
-        <div className="flex items-center justify-between">
-          <span className="text-[10px] text-[var(--text-label)] uppercase tracking-wider">
-            Confidence
+      {/* Bottom row */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className={`text-[11px] font-semibold px-2 py-0.5 rounded ${dir.color} ${dir.bg}/15`}>
+            {dir.label}
           </span>
-          <span className="text-[11px] font-medium text-[var(--text-secondary)] number-display">
-            {Math.round(confidence * 100)}%
+          <span className="text-[11px] text-[var(--text-label)]">
+            {Math.round(confidence * 100)}% conf.
           </span>
         </div>
+        <span className="text-[20px] font-bold text-white number-display">
+          {pct}<span className="text-[13px] text-[var(--text-tertiary)]">¢</span>
+        </span>
       </div>
     </div>
   );

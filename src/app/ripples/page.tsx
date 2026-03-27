@@ -34,7 +34,7 @@ function RipplesContent() {
 
 export default function RipplesPage() {
   return (
-    <AppShell subtitle="Ripple Effects">
+    <AppShell>
       <Suspense
         fallback={
           <div className="flex flex-col items-center justify-center py-24 gap-4">

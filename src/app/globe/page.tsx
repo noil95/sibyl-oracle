@@ -3,7 +3,7 @@ import GlobeView from "../components/GlobeView";
 
 export default function GlobePage() {
   return (
-    <AppShell subtitle="Global Prediction Map">
+    <AppShell>
       <div className="space-y-1 mb-8">
         <h2 className="text-xl font-semibold text-[var(--text-primary)] tracking-tight">
           Global Prediction Globe

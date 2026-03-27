@@ -45,43 +45,35 @@ export default function EconomicPage() {
   }, []);
 
   return (
-    <AppShell subtitle="Economic Predictions">
+    <AppShell>
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-24 gap-4">
-          <div className="animate-spin w-6 h-6 border-2 border-[var(--border-primary)] border-t-[var(--accent-purple)] rounded-full" />
-          <p className="text-xs text-[var(--text-tertiary)]">Loading economic predictions...</p>
+        <div className="flex items-center justify-center py-20">
+          <div className="animate-spin w-5 h-5 border-2 border-[var(--border-primary)] border-t-[var(--accent-purple)] rounded-full" />
         </div>
       ) : (
-        <div className="space-y-6">
-          <div className="space-y-1">
-            <h2 className="text-xl font-semibold text-[var(--text-primary)] tracking-tight">
-              Economic Predictions
-            </h2>
-            <p className="text-[13px] text-[var(--text-tertiary)]">
-              Market trends, interest rates, inflation, and commodities
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <span className="text-[9px] uppercase tracking-widest text-[var(--text-label)] font-medium">Sources</span>
-            {["FRED", "BLS", "Yahoo", "CoinGecko", "EIA", "NewsAPI"].map((s) => (
-              <span
-                key={s}
-                className="text-[9px] text-[var(--text-tertiary)] bg-[var(--bg-elevated)] px-2 py-0.5 rounded font-medium"
-              >
-                {s}
-              </span>
-            ))}
+        <div>
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-[22px] font-semibold text-white tracking-tight">Economy</h2>
+              <p className="text-[13px] text-[var(--text-tertiary)] mt-1">
+                Market trends, rates, inflation, commodities
+              </p>
+            </div>
+            <div className="flex items-center gap-1.5">
+              {["FRED", "BLS", "Yahoo", "CoinGecko", "EIA"].map((s) => (
+                <span key={s} className="text-[10px] text-[var(--text-tertiary)] bg-[var(--bg-elevated)] px-2 py-0.5 rounded">
+                  {s}
+                </span>
+              ))}
+            </div>
           </div>
 
           {predictions.length === 0 ? (
-            <div className="text-center py-20">
-              <p className="text-[var(--text-tertiary)] text-sm">
-                No economic predictions yet. Run the economic cron job to generate predictions.
-              </p>
+            <div className="text-center py-20 text-[var(--text-tertiary)] text-[14px]">
+              No economic predictions yet. Run the cron job to generate data.
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {predictions.map((item) => (
                 <GenericPredictionCard
                   key={item.predictionType.id}

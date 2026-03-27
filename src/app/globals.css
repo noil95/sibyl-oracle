@@ -1,43 +1,44 @@
 @import "tailwindcss";
 
 :root {
-  /* Backgrounds — deep, rich darks */
-  --bg-primary: #080810;
-  --bg-secondary: #0c0c18;
-  --bg-card: #101020;
-  --bg-card-hover: #14142a;
-  --bg-elevated: #181830;
-  --bg-input: #0e0e1c;
-  --bg-surface: #121224;
+  /* Backgrounds */
+  --bg-primary: #0d0d0d;
+  --bg-secondary: #141414;
+  --bg-card: #181818;
+  --bg-card-hover: #1e1e1e;
+  --bg-elevated: #222222;
+  --bg-input: #1a1a1a;
+  --bg-surface: #151515;
+  --bg-highlight: #252525;
 
   /* Borders */
-  --border-primary: rgba(255, 255, 255, 0.06);
-  --border-hover: rgba(255, 255, 255, 0.1);
+  --border-primary: #222222;
+  --border-hover: #333333;
   --border-active: #7c3aed;
-  --border-subtle: rgba(255, 255, 255, 0.03);
+  --border-subtle: #1a1a1a;
 
-  /* Text — higher contrast hierarchy */
-  --text-primary: #f5f5f7;
-  --text-secondary: #a1a1b5;
-  --text-tertiary: #6b6b80;
-  --text-label: #4a4a60;
-  --text-muted: #3a3a50;
+  /* Text */
+  --text-primary: #ffffff;
+  --text-secondary: #999999;
+  --text-tertiary: #666666;
+  --text-label: #555555;
+  --text-muted: #444444;
 
   /* Accent — purple */
   --accent-purple: #7c3aed;
   --accent-purple-hover: #6d28d9;
-  --accent-purple-dim: rgba(124, 58, 237, 0.12);
-  --accent-purple-glow: rgba(124, 58, 237, 0.06);
+  --accent-purple-dim: rgba(124, 58, 237, 0.15);
+  --accent-purple-glow: rgba(124, 58, 237, 0.08);
 
-  /* Status — muted, professional */
-  --status-up: #10b981;
-  --status-up-dim: rgba(16, 185, 129, 0.1);
+  /* Status */
+  --status-up: #22c55e;
+  --status-up-dim: rgba(34, 197, 94, 0.12);
   --status-down: #ef4444;
-  --status-down-dim: rgba(239, 68, 68, 0.1);
-  --status-neutral: #f59e0b;
-  --status-neutral-dim: rgba(245, 158, 11, 0.1);
+  --status-down-dim: rgba(239, 68, 68, 0.12);
+  --status-neutral: #eab308;
+  --status-neutral-dim: rgba(234, 179, 8, 0.12);
 
-  /* Legacy compat */
+  /* Legacy */
   --background: var(--bg-primary);
   --foreground: var(--text-primary);
 }
@@ -58,18 +59,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── Subtle page background ── */
-.bg-subtle {
-  background:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(124, 58, 237, 0.03) 0%, transparent 100%);
-}
-
-/* ── Pulse animation for live indicator ── */
+/* ── Pulse animation ── */
 @keyframes pulse-live {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
 }
-
 .live-dot {
   animation: pulse-live 2s ease-in-out infinite;
 }
@@ -79,62 +73,32 @@ body {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
 .score-animate {
-  animation: count-up 0.4s ease-out;
+  animation: count-up 0.3s ease-out;
 }
 
-/* ── Card interactions ── */
+/* ── Card hover ── */
 .card-hover {
-  transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
+  transition: background-color 0.15s ease;
 }
-
 .card-hover:hover {
-  border-color: var(--border-hover);
   background-color: var(--bg-card-hover);
-  transform: translateY(-1px);
 }
 
-/* ── Premium number display ── */
+/* ── Number display ── */
 .number-display {
-  font-feature-settings: "tnum" 1, "ss01" 1;
-  letter-spacing: -0.02em;
+  font-feature-settings: "tnum" 1;
+  letter-spacing: -0.03em;
 }
 
 /* ── Scrollbar ── */
-::-webkit-scrollbar {
-  width: 5px;
-}
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #444; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.12);
-}
-
-/* Hide scrollbar for nav */
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* ── Focus styles ── */
-:focus-visible {
-  outline: 2px solid var(--accent-purple);
-  outline-offset: 2px;
-}
-
-/* ── Selection ── */
-::selection {
-  background: rgba(124, 58, 237, 0.3);
-}
+/* ── Focus ── */
+:focus-visible { outline: 2px solid var(--accent-purple); outline-offset: 2px; }
+::selection { background: rgba(124, 58, 237, 0.3); }
