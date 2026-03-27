@@ -1,42 +1,58 @@
 @import "tailwindcss";
 
 :root {
-  /* Backgrounds */
-  --bg-primary: #0d0d0d;
-  --bg-secondary: #141414;
-  --bg-card: #181818;
-  --bg-card-hover: #1e1e1e;
-  --bg-elevated: #222222;
-  --bg-input: #1a1a1a;
-  --bg-surface: #151515;
-  --bg-highlight: #252525;
+  /* ── Backgrounds — deep navy, not pure black ── */
+  --bg-primary: #0a0e1a;
+  --bg-secondary: #0f1424;
+  --bg-card: #131929;
+  --bg-card-hover: #1a2238;
+  --bg-elevated: #1e2640;
+  --bg-input: #111827;
+  --bg-surface: #151c2e;
+  --bg-glass: rgba(19, 25, 41, 0.6);
 
-  /* Borders */
-  --border-primary: #222222;
-  --border-hover: #333333;
-  --border-active: #7c3aed;
-  --border-subtle: #1a1a1a;
+  /* ── Borders ── */
+  --border-primary: rgba(148, 163, 184, 0.08);
+  --border-hover: rgba(148, 163, 184, 0.15);
+  --border-active: #8b5cf6;
+  --border-glow: rgba(139, 92, 246, 0.3);
 
-  /* Text */
-  --text-primary: #ffffff;
-  --text-secondary: #999999;
-  --text-tertiary: #666666;
-  --text-label: #555555;
-  --text-muted: #444444;
+  /* ── Text ── */
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #64748b;
+  --text-label: #475569;
+  --text-muted: #334155;
 
-  /* Accent — purple */
-  --accent-purple: #7c3aed;
-  --accent-purple-hover: #6d28d9;
-  --accent-purple-dim: rgba(124, 58, 237, 0.15);
-  --accent-purple-glow: rgba(124, 58, 237, 0.08);
+  /* ── Accent colors — vibrant ── */
+  --accent-purple: #8b5cf6;
+  --accent-purple-hover: #7c3aed;
+  --accent-purple-dim: rgba(139, 92, 246, 0.15);
+  --accent-purple-glow: rgba(139, 92, 246, 0.25);
 
-  /* Status */
+  --accent-blue: #3b82f6;
+  --accent-blue-dim: rgba(59, 130, 246, 0.15);
+
+  --accent-gold: #f59e0b;
+  --accent-gold-dim: rgba(245, 158, 11, 0.15);
+
+  --accent-cyan: #06b6d4;
+  --accent-cyan-dim: rgba(6, 182, 212, 0.15);
+
+  /* ── Status ── */
   --status-up: #22c55e;
-  --status-up-dim: rgba(34, 197, 94, 0.12);
+  --status-up-dim: rgba(34, 197, 94, 0.15);
   --status-down: #ef4444;
-  --status-down-dim: rgba(239, 68, 68, 0.12);
-  --status-neutral: #eab308;
-  --status-neutral-dim: rgba(234, 179, 8, 0.12);
+  --status-down-dim: rgba(239, 68, 68, 0.15);
+  --status-neutral: #f59e0b;
+  --status-neutral-dim: rgba(245, 158, 11, 0.15);
+
+  /* ── Gradients ── */
+  --gradient-purple: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+  --gradient-gold: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+  --gradient-up: linear-gradient(135deg, #22c55e 0%, #10b981 100%);
+  --gradient-down: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+  --gradient-blue: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
 
   /* Legacy */
   --background: var(--bg-primary);
@@ -59,30 +75,69 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ── Page background with gradient mesh ── */
+.bg-mesh {
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 10%, rgba(139, 92, 246, 0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 50% at 80% 20%, rgba(59, 130, 246, 0.04) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 30% at 50% 80%, rgba(6, 182, 212, 0.03) 0%, transparent 70%);
+}
+
 /* ── Pulse animation ── */
 @keyframes pulse-live {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
 }
 .live-dot {
   animation: pulse-live 2s ease-in-out infinite;
 }
 
-/* ── Score counter ── */
-@keyframes count-up {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
+/* ── Glow pulse for highlights ── */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(139, 92, 246, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.5); }
 }
-.score-animate {
-  animation: count-up 0.3s ease-out;
+.glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
 }
 
-/* ── Card hover ── */
+/* ── Score counter ── */
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(6px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.score-animate {
+  animation: count-up 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Shimmer loading ── */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, transparent 25%, rgba(139, 92, 246, 0.05) 50%, transparent 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+/* ── Card interactions ── */
 .card-hover {
-  transition: background-color 0.15s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .card-hover:hover {
+  border-color: var(--border-hover);
   background-color: var(--bg-card-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(139, 92, 246, 0.1);
+}
+
+/* ── Glass card ── */
+.glass-card {
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(148, 163, 184, 0.08);
 }
 
 /* ── Number display ── */
@@ -91,14 +146,40 @@ body {
   letter-spacing: -0.03em;
 }
 
+/* ── Gradient text ── */
+.gradient-text {
+  background: linear-gradient(135deg, #8b5cf6, #3b82f6, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Progress bar glow ── */
+.bar-glow-up {
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
+}
+.bar-glow-down {
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+}
+.bar-glow-neutral {
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+}
+
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: #444; }
+::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.15); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.25); }
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
 /* ── Focus ── */
-:focus-visible { outline: 2px solid var(--accent-purple); outline-offset: 2px; }
-::selection { background: rgba(124, 58, 237, 0.3); }
+:focus-visible {
+  outline: 2px solid var(--accent-purple);
+  outline-offset: 2px;
+}
+
+/* ── Selection ── */
+::selection {
+  background: rgba(139, 92, 246, 0.3);
+}

@@ -24,6 +24,12 @@ interface DomainPrediction {
   } | null;
 }
 
+const FILTERS = [
+  { key: "all" as const, label: "All Markets", icon: "M4 6h16M4 12h16M4 18h16" },
+  { key: "economic" as const, label: "Economy", icon: "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" },
+  { key: "tech" as const, label: "Tech", icon: "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" },
+];
+
 export default function PredictionFeed() {
   const [predictions, setPredictions] = useState<DomainPrediction[]>([]);
   const [loading, setLoading] = useState(true);
@@ -56,8 +62,10 @@ export default function PredictionFeed() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-20">
-        <div className="animate-spin w-5 h-5 border-2 border-[var(--border-primary)] border-t-[var(--accent-purple)] rounded-full" />
+      <div className="space-y-3">
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <div key={i} className="h-[140px] bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-xl shimmer" />
+        ))}
       </div>
     );
   }
@@ -80,48 +88,56 @@ export default function PredictionFeed() {
 
   return (
     <div>
-      {/* Tabs */}
-      <div className="flex items-center gap-0 border-b border-[var(--border-primary)] mb-6">
-        {[
-          { key: "all" as const, label: "All" },
-          { key: "economic" as const, label: "Economy" },
-          { key: "tech" as const, label: "Tech" },
-        ].map((f) => (
+      {/* Filter tabs */}
+      <div className="flex items-center gap-2 mb-6">
+        {FILTERS.map((f) => (
           <button
             key={f.key}
             onClick={() => setFilter(f.key)}
-            className={`relative px-4 py-2.5 text-[13px] font-medium transition-colors ${
+            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-[12px] font-semibold transition-all duration-200 ${
               filter === f.key
-                ? "text-white"
-                : "text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]"
+                ? "bg-[var(--accent-purple)] text-white shadow-lg shadow-purple-500/20"
+                : "bg-[var(--bg-card)] text-[var(--text-tertiary)] border border-[var(--border-primary)] hover:text-white hover:border-[var(--border-hover)]"
             }`}
           >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+              <path d={f.icon} />
+            </svg>
             {f.label}
-            {filter === f.key && (
-              <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-[var(--accent-purple)]" />
-            )}
           </button>
         ))}
 
         <Link
           href="/politics"
-          className="px-4 py-2.5 text-[13px] font-medium text-[var(--text-tertiary)] hover:text-[var(--text-secondary)] transition-colors"
+          className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-[12px] font-semibold bg-[var(--bg-card)] text-[var(--text-tertiary)] border border-[var(--border-primary)] hover:text-white hover:border-[var(--border-hover)] transition-all duration-200"
         >
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+          </svg>
           Politics
         </Link>
 
-        <div className="ml-auto text-[12px] text-[var(--text-label)]">
-          {sorted.length} market{sorted.length !== 1 ? "s" : ""}
+        <div className="ml-auto flex items-center gap-2">
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 live-dot" />
+          <span className="text-[11px] text-[var(--text-label)] number-display">
+            {sorted.length} market{sorted.length !== 1 ? "s" : ""}
+          </span>
         </div>
       </div>
 
       {/* Grid */}
       {sorted.length === 0 ? (
-        <div className="text-center py-20 text-[var(--text-tertiary)] text-[14px]">
-          No predictions yet. Run the cron job to start generating data.
+        <div className="text-center py-20">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500/10 to-purple-500/10 flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          </div>
+          <p className="text-[var(--text-secondary)] text-[14px] font-medium">No predictions yet</p>
+          <p className="text-[var(--text-label)] text-[12px] mt-1">Run the cron jobs to start generating live data</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {sorted.map((item) => (
             <GenericPredictionCard
               key={item.predictionType.id}
