@@ -1,0 +1,69 @@
+<h2>The Prediction Globe + Oracle Score</h2>
+<p class="subtitle">Two gamification layers that make Sibyl Oracle addictive and shareable</p>
+
+<div class="cards">
+  <div class="card" data-choice="globe" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: linear-gradient(135deg, #0a0a2e, #1a1040); padding: 30px; text-align: center;">
+      <!-- Globe mockup -->
+      <div style="width: 200px; height: 200px; margin: 0 auto; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #1a2a5e, #0a0a2e 60%, #050515); border: 2px solid rgba(100, 140, 255, 0.2); position: relative; overflow: hidden; box-shadow: 0 0 40px rgba(59, 130, 246, 0.15), 0 0 80px rgba(59, 130, 246, 0.05);">
+        <!-- Grid lines -->
+        <div style="position: absolute; inset: 0; border-radius: 50%; border: 1px solid rgba(255,255,255,0.05);"></div>
+        <div style="position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: rgba(255,255,255,0.05);"></div>
+        <div style="position: absolute; top: 0; bottom: 0; left: 50%; width: 1px; background: rgba(255,255,255,0.05);"></div>
+
+        <!-- Hotspots -->
+        <div style="position: absolute; top: 30%; left: 35%; width: 12px; height: 12px; border-radius: 50%; background: #ef4444; box-shadow: 0 0 12px #ef4444, 0 0 24px rgba(239,68,68,0.3); animation: pulse 2s infinite;"></div>
+        <div style="position: absolute; top: 45%; left: 55%; width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 8px #22c55e;"></div>
+        <div style="position: absolute; top: 35%; left: 65%; width: 10px; height: 10px; border-radius: 50%; background: #eab308; box-shadow: 0 0 10px #eab308; animation: pulse 3s infinite;"></div>
+        <div style="position: absolute; top: 55%; left: 40%; width: 6px; height: 6px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 6px #22c55e;"></div>
+        <div style="position: absolute; top: 25%; left: 50%; width: 14px; height: 14px; border-radius: 50%; background: #ef4444; box-shadow: 0 0 16px #ef4444, 0 0 32px rgba(239,68,68,0.4); animation: pulse 1.5s infinite;"></div>
+      </div>
+      <style>@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.3); } }</style>
+      <div style="margin-top: 16px; display: flex; justify-content: center; gap: 16px; font-size: 11px;">
+        <span style="color: #ef4444;">● High Risk</span>
+        <span style="color: #eab308;">● Shifting</span>
+        <span style="color: #22c55e;">● Stable</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>3D Prediction Globe</h3>
+      <p>Interactive globe on the homepage. Hotspots glow where predictions are active. Red = danger, yellow = shifting, green = stable. Click any hotspot to see that prediction. Your personal risk areas pulse brighter. Spins slowly, feels like a mission control dashboard.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="score" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: linear-gradient(135deg, #0a0a2e, #1a1040); padding: 30px; text-align: center;">
+      <!-- Oracle Score mockup -->
+      <div style="width: 200px; margin: 0 auto;">
+        <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.3); margin-bottom: 8px;">Your Oracle Score</div>
+        <div style="font-size: 72px; font-weight: 900; background: linear-gradient(135deg, #a78bfa, #818cf8, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1;">847</div>
+        <div style="font-size: 12px; color: #22c55e; margin-top: 4px;">↑ 23 this week</div>
+        <div style="margin-top: 16px; display: flex; gap: 4px; justify-content: center;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, #f59e0b, #d97706); display: flex; align-items: center; justify-content: center; font-size: 14px;">🔮</div>
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); display: flex; align-items: center; justify-content: center; font-size: 14px;">⚡</div>
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, #10b981, #059669); display: flex; align-items: center; justify-content: center; font-size: 14px;">🎯</div>
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px dashed rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 12px; color: rgba(255,255,255,0.2);">?</div>
+        </div>
+        <div style="font-size: 10px; color: rgba(255,255,255,0.2); margin-top: 8px;">3 badges earned • 1 locked</div>
+      </div>
+      <div style="margin-top: 20px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 12px; text-align: left;">
+        <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.2); margin-bottom: 8px;">Leaderboard</div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: rgba(255,255,255,0.5); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span style="color: #f59e0b;">#1 CryptoOracle</span><span>1,247</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: rgba(255,255,255,0.5); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>#2 EconWatcher</span><span>1,103</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; padding: 4px 0; color: #a78bfa;">
+          <span>#12 You</span><span>847</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Oracle Score + Badges</h3>
+      <p>Personal score (0-1000+) that grows as you make correct predictions. Badges for milestones: "Economic Prophet," "Tech Oracle," "5-Streak." Global leaderboard. Weekly score change indicator. The number becomes your identity — "I'm an 847 on Sibyl."</p>
+    </div>
+  </div>
+</div>
+
+<p class="subtitle" style="margin-top: 24px; text-align: center;">Both will be built together — the Globe is the visual hook, the Score is the addiction loop. Click either to explore it further.</p>

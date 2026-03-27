@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sibyl Oracle — Globe + Score Concept</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #060611;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    overflow-x: hidden;
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Ambient background glow */
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    width: 800px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(239, 68, 68, 0.06) 0%, transparent 70%);
+    top: 30%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  /* Globe container */
+  .globe-container {
+    position: relative;
+    width: 420px;
+    height: 420px;
+    margin-bottom: 40px;
+  }
+
+  .globe {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    position: relative;
+    background: radial-gradient(circle at 30% 30%, #1e2a5a 0%, #0d1333 40%, #060611 80%);
+    box-shadow:
+      inset -30px -30px 60px rgba(0,0,0,0.5),
+      inset 10px 10px 40px rgba(99, 102, 241, 0.08),
+      0 0 80px rgba(99, 102, 241, 0.1),
+      0 0 160px rgba(99, 102, 241, 0.05);
+    overflow: hidden;
+    cursor: grab;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .globe:active { cursor: grabbing; }
+
+  /* Globe grid lines */
+  .grid-line {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(99, 102, 241, 0.06);
+  }
+
+  .grid-h1 { inset: 15% 5%; }
+  .grid-h2 { inset: 30% 2%; }
+  .grid-h3 { inset: 45% 0%; }
+  .grid-v1 {
+    inset: 5%;
+    border-radius: 50%;
+    border: 1px solid rgba(99, 102, 241, 0.04);
+    transform: rotateY(60deg);
+  }
+  .grid-v2 {
+    inset: 5%;
+    border-radius: 50%;
+    border: 1px solid rgba(99, 102, 241, 0.04);
+    transform: rotateY(-30deg);
+  }
+
+  /* Equator */
+  .equator {
+    position: absolute;
+    top: 50%;
+    left: -2%;
+    right: -2%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.15), transparent);
+    transform: translateY(-50%);
+  }
+
+  /* Meridian */
+  .meridian {
+    position: absolute;
+    left: 50%;
+    top: -2%;
+    bottom: -2%;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+    transform: translateX(-50%);
+  }
+
+  /* Continent shapes (simplified) */
+  .continent {
+    position: absolute;
+    background: rgba(99, 102, 241, 0.08);
+    border: 1px solid rgba(99, 102, 241, 0.06);
+  }
+
+  .na { top: 18%; left: 15%; width: 22%; height: 20%; border-radius: 40% 50% 30% 60%; }
+  .eu { top: 20%; left: 48%; width: 14%; height: 12%; border-radius: 50% 40% 60% 30%; }
+  .asia { top: 18%; left: 58%; width: 24%; height: 22%; border-radius: 30% 50% 40% 60%; }
+  .sa { top: 45%; left: 22%; width: 12%; height: 22%; border-radius: 40% 50% 60% 30%; }
+  .af { top: 35%; left: 45%; width: 14%; height: 20%; border-radius: 40% 50% 50% 40%; }
+
+  /* Hotspots */
+  .hotspot {
+    position: absolute;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+  }
+
+  .hotspot:hover {
+    transform: scale(1.8);
+    z-index: 20;
+  }
+
+  .hotspot::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    opacity: 0.3;
+    animation: ripple 2s ease-out infinite;
+  }
+
+  .hotspot::after {
+    content: '';
+    position: absolute;
+    inset: -16px;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    opacity: 0.1;
+    animation: ripple 2s ease-out 0.5s infinite;
+  }
+
+  @keyframes ripple {
+    0% { transform: scale(0.8); opacity: 0.4; }
+    100% { transform: scale(2); opacity: 0; }
+  }
+
+  .hotspot.critical {
+    width: 16px; height: 16px;
+    background: radial-gradient(circle, #ff4444, #cc0000);
+    box-shadow: 0 0 20px rgba(255, 68, 68, 0.6), 0 0 40px rgba(255, 68, 68, 0.3);
+    color: #ff4444;
+    animation: pulse-critical 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse-critical {
+    0%, 100% { box-shadow: 0 0 20px rgba(255, 68, 68, 0.6), 0 0 40px rgba(255, 68, 68, 0.3); }
+    50% { box-shadow: 0 0 30px rgba(255, 68, 68, 0.8), 0 0 60px rgba(255, 68, 68, 0.4); }
+  }
+
+  .hotspot.warning {
+    width: 12px; height: 12px;
+    background: radial-gradient(circle, #fbbf24, #d97706);
+    box-shadow: 0 0 15px rgba(251, 191, 36, 0.5), 0 0 30px rgba(251, 191, 36, 0.2);
+    color: #fbbf24;
+    animation: pulse-warning 2.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse-warning {
+    0%, 100% { box-shadow: 0 0 15px rgba(251, 191, 36, 0.5); }
+    50% { box-shadow: 0 0 25px rgba(251, 191, 36, 0.7), 0 0 50px rgba(251, 191, 36, 0.3); }
+  }
+
+  .hotspot.stable {
+    width: 8px; height: 8px;
+    background: radial-gradient(circle, #34d399, #059669);
+    box-shadow: 0 0 10px rgba(52, 211, 153, 0.4);
+    color: #34d399;
+  }
+
+  .hotspot.stable::before, .hotspot.stable::after { display: none; }
+
+  /* Tooltip */
+  .hotspot .tooltip {
+    position: absolute;
+    bottom: calc(100% + 16px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(10, 10, 30, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 12px 16px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+    transform: translateX(-50%) translateY(4px);
+    font-size: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+
+  .hotspot:hover .tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .tooltip-title { font-weight: 700; margin-bottom: 2px; }
+  .tooltip-score { font-size: 18px; font-weight: 900; }
+  .tooltip-score.red { color: #ff4444; }
+  .tooltip-score.yellow { color: #fbbf24; }
+  .tooltip-score.green { color: #34d399; }
+
+  /* Orbital ring */
+  .orbital-ring {
+    position: absolute;
+    inset: -20px;
+    border-radius: 50%;
+    border: 1px solid rgba(99, 102, 241, 0.08);
+    transform: rotateX(75deg);
+    animation: spin-slow 30s linear infinite;
+  }
+
+  .orbital-ring-2 {
+    position: absolute;
+    inset: -35px;
+    border-radius: 50%;
+    border: 1px dashed rgba(99, 102, 241, 0.04);
+    transform: rotateX(75deg) rotateZ(45deg);
+    animation: spin-slow 45s linear infinite reverse;
+  }
+
+  @keyframes spin-slow {
+    from { transform: rotateX(75deg) rotateZ(0deg); }
+    to { transform: rotateX(75deg) rotateZ(360deg); }
+  }
+
+  /* Scanning line */
+  .scan-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.4), transparent);
+    animation: scan 4s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes scan {
+    0% { top: 10%; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { top: 90%; opacity: 0; }
+  }
+
+  /* Globe label */
+  .globe-label {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+  }
+
+  /* Score section below globe */
+  .score-section {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    padding: 32px 48px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 24px;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+    max-width: 700px;
+    width: 100%;
+  }
+
+  .score-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.3), transparent);
+  }
+
+  .score-main {
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .score-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    margin-bottom: 4px;
+  }
+
+  .score-number {
+    font-size: 64px;
+    font-weight: 900;
+    line-height: 1;
+    background: linear-gradient(135deg, #c4b5fd, #818cf8, #60a5fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 20px rgba(129, 140, 248, 0.3));
+  }
+
+  .score-change {
+    font-size: 13px;
+    color: #34d399;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  .score-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .badge-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  .badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    position: relative;
+    transition: transform 0.2s;
+    cursor: pointer;
+  }
+
+  .badge:hover { transform: scale(1.15) translateY(-2px); }
+
+  .badge.gold {
+    background: linear-gradient(135deg, #fbbf24, #b45309);
+    box-shadow: 0 4px 16px rgba(251, 191, 36, 0.3);
+  }
+
+  .badge.purple {
+    background: linear-gradient(135deg, #a78bfa, #6d28d9);
+    box-shadow: 0 4px 16px rgba(167, 139, 250, 0.3);
+  }
+
+  .badge.emerald {
+    background: linear-gradient(135deg, #34d399, #047857);
+    box-shadow: 0 4px 16px rgba(52, 211, 153, 0.3);
+  }
+
+  .badge.locked {
+    background: rgba(255,255,255,0.03);
+    border: 1px dashed rgba(255,255,255,0.1);
+    box-shadow: none;
+    font-size: 14px;
+    color: rgba(255,255,255,0.15);
+  }
+
+  .streak-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .streak-dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+  }
+
+  .streak-dot.hit {
+    background: linear-gradient(135deg, rgba(52, 211, 153, 0.2), rgba(52, 211, 153, 0.1));
+    border: 1px solid rgba(52, 211, 153, 0.3);
+    color: #34d399;
+  }
+
+  .streak-dot.miss {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.15);
+  }
+
+  .streak-dot.next {
+    background: rgba(255,255,255,0.02);
+    border: 1px dashed rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.1);
+  }
+
+  .streak-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 1px;
+  }
+
+  .streak-multiplier {
+    font-size: 11px;
+    font-weight: 700;
+    color: #fbbf24;
+    background: rgba(251, 191, 36, 0.1);
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+
+  /* Leaderboard mini */
+  .leaderboard-mini {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .lb-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    transition: background 0.2s;
+  }
+
+  .lb-row:hover { background: rgba(255,255,255,0.03); }
+
+  .lb-rank { width: 24px; color: rgba(255,255,255,0.3); font-weight: 600; }
+  .lb-name { flex: 1; color: rgba(255,255,255,0.5); }
+  .lb-score { font-weight: 700; font-variant-numeric: tabular-nums; color: rgba(255,255,255,0.4); }
+
+  .lb-row.gold .lb-rank { color: #fbbf24; }
+  .lb-row.gold .lb-name { color: #fbbf24; }
+  .lb-row.you { background: rgba(129, 140, 248, 0.08); border: 1px solid rgba(129, 140, 248, 0.15); }
+  .lb-row.you .lb-name { color: #a78bfa; font-weight: 600; }
+  .lb-row.you .lb-score { color: #a78bfa; }
+
+  /* Legend bar */
+  .legend {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .legend-dot.red { background: #ff4444; box-shadow: 0 0 8px rgba(255,68,68,0.5); }
+  .legend-dot.yellow { background: #fbbf24; box-shadow: 0 0 8px rgba(251,191,36,0.5); }
+  .legend-dot.green { background: #34d399; box-shadow: 0 0 8px rgba(52,211,153,0.5); }
+
+  .section-title {
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.15);
+    margin-top: 60px;
+    margin-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <!-- The Globe -->
+  <div class="globe-container">
+    <div class="orbital-ring"></div>
+    <div class="orbital-ring-2"></div>
+    <div class="globe">
+      <!-- Grid lines -->
+      <div class="grid-line grid-h1"></div>
+      <div class="grid-line grid-h2"></div>
+      <div class="grid-line grid-h3"></div>
+      <div class="grid-line grid-v1"></div>
+      <div class="grid-line grid-v2"></div>
+      <div class="equator"></div>
+      <div class="meridian"></div>
+
+      <!-- Continents -->
+      <div class="continent na"></div>
+      <div class="continent eu"></div>
+      <div class="continent asia"></div>
+      <div class="continent sa"></div>
+      <div class="continent af"></div>
+
+      <!-- Scan line -->
+      <div class="scan-line"></div>
+
+      <!-- Hotspots with tooltips -->
+      <div class="hotspot critical" style="top: 24%; left: 22%;">
+        <div class="tooltip">
+          <div class="tooltip-title">US Recession Risk</div>
+          <div class="tooltip-score red">78%</div>
+        </div>
+      </div>
+
+      <div class="hotspot critical" style="top: 30%; left: 30%;">
+        <div class="tooltip">
+          <div class="tooltip-title">Tech Layoff Index</div>
+          <div class="tooltip-score red">82%</div>
+        </div>
+      </div>
+
+      <div class="hotspot warning" style="top: 22%; left: 52%;">
+        <div class="tooltip">
+          <div class="tooltip-title">EU Inflation Shift</div>
+          <div class="tooltip-score yellow">61%</div>
+        </div>
+      </div>
+
+      <div class="hotspot warning" style="top: 26%; left: 68%;">
+        <div class="tooltip">
+          <div class="tooltip-title">China Growth Slowdown</div>
+          <div class="tooltip-score yellow">57%</div>
+        </div>
+      </div>
+
+      <div class="hotspot stable" style="top: 50%; left: 26%;">
+        <div class="tooltip">
+          <div class="tooltip-title">Brazil Markets</div>
+          <div class="tooltip-score green">Stable</div>
+        </div>
+      </div>
+
+      <div class="hotspot stable" style="top: 40%; left: 50%;">
+        <div class="tooltip">
+          <div class="tooltip-title">Africa Growth</div>
+          <div class="tooltip-score green">Stable</div>
+        </div>
+      </div>
+
+      <div class="hotspot critical" style="top: 35%; left: 42%;">
+        <div class="tooltip">
+          <div class="tooltip-title">Oil Price Surge</div>
+          <div class="tooltip-score red">73%</div>
+        </div>
+      </div>
+    </div>
+    <div class="globe-label">Global Prediction Map</div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot red"></div> Critical Risk</div>
+    <div class="legend-item"><div class="legend-dot yellow"></div> Shifting</div>
+    <div class="legend-item"><div class="legend-dot green"></div> Stable</div>
+  </div>
+
+  <div class="section-title">Your Oracle Score</div>
+
+  <!-- Oracle Score -->
+  <div class="score-section">
+    <div class="score-main">
+      <div class="score-label">Oracle Score</div>
+      <div class="score-number">847</div>
+      <div class="score-change">+23 this week</div>
+    </div>
+
+    <div class="score-details">
+      <!-- Badges -->
+      <div>
+        <div class="streak-label" style="margin-bottom: 6px;">BADGES</div>
+        <div class="badge-row">
+          <div class="badge gold" title="Economic Prophet">🔮</div>
+          <div class="badge purple" title="5-Streak Master">⚡</div>
+          <div class="badge emerald" title="Tech Oracle">🎯</div>
+          <div class="badge locked" title="Locked">?</div>
+          <div class="badge locked" title="Locked">?</div>
+        </div>
+      </div>
+
+      <!-- Prediction streak -->
+      <div>
+        <div class="streak-bar">
+          <div class="streak-label">STREAK</div>
+          <div class="streak-dot hit">✓</div>
+          <div class="streak-dot hit">✓</div>
+          <div class="streak-dot hit">✓</div>
+          <div class="streak-dot miss">✗</div>
+          <div class="streak-dot hit">✓</div>
+          <div class="streak-dot next">?</div>
+          <div class="streak-multiplier">3x</div>
+        </div>
+      </div>
+
+      <!-- Mini leaderboard -->
+      <div class="leaderboard-mini">
+        <div class="streak-label">LEADERBOARD</div>
+        <div class="lb-row gold">
+          <span class="lb-rank">#1</span>
+          <span class="lb-name">CryptoOracle</span>
+          <span class="lb-score">1,247</span>
+        </div>
+        <div class="lb-row">
+          <span class="lb-rank">#2</span>
+          <span class="lb-name">EconWatcher</span>
+          <span class="lb-score">1,103</span>
+        </div>
+        <div class="lb-row you">
+          <span class="lb-rank">#12</span>
+          <span class="lb-name">You</span>
+          <span class="lb-score">847</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

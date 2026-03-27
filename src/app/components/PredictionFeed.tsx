@@ -40,12 +40,10 @@ export default function PredictionFeed() {
         const econData = econRes.ok ? await econRes.json() : { domainPredictions: [] };
         const techData = techRes.ok ? await techRes.json() : { domainPredictions: [] };
 
-        const all = [
+        setPredictions([
           ...(econData.domainPredictions || []),
           ...(techData.domainPredictions || []),
-        ];
-
-        setPredictions(all);
+        ]);
       } catch (err) {
         console.error("Error loading feed:", err);
       } finally {
@@ -58,9 +56,9 @@ export default function PredictionFeed() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 gap-4">
-        <div className="animate-spin w-8 h-8 border-2 border-[var(--border-primary)] border-t-[var(--accent-purple)] rounded-full" />
-        <p className="text-sm text-[var(--text-tertiary)]">Loading predictions...</p>
+      <div className="flex flex-col items-center justify-center py-24 gap-4">
+        <div className="animate-spin w-6 h-6 border-2 border-[var(--border-primary)] border-t-[var(--accent-purple)] rounded-full" />
+        <p className="text-xs text-[var(--text-tertiary)]">Loading predictions...</p>
       </div>
     );
   }
@@ -81,40 +79,46 @@ export default function PredictionFeed() {
     return 0;
   });
 
+  const filters = [
+    { key: "all" as const, label: "All" },
+    { key: "economic" as const, label: "Economy" },
+    { key: "tech" as const, label: "Tech" },
+  ];
+
   return (
     <div className="space-y-6">
       {/* Filter pills */}
       <div className="flex items-center gap-1">
-        {(["all", "economic", "tech"] as const).map((f) => (
+        {filters.map((f) => (
           <button
-            key={f}
-            onClick={() => setFilter(f)}
-            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-              filter === f
+            key={f.key}
+            onClick={() => setFilter(f.key)}
+            className={`px-3 py-1.5 rounded-md text-[11px] font-medium uppercase tracking-wider transition-colors ${
+              filter === f.key
                 ? "bg-[var(--accent-purple-dim)] text-[var(--accent-purple)]"
-                : "text-[var(--text-tertiary)] hover:text-[var(--text-secondary)] hover:bg-[var(--bg-card)]"
+                : "text-[var(--text-label)] hover:text-[var(--text-secondary)] hover:bg-[var(--bg-card)]"
             }`}
           >
-            {f === "all" ? "All" : f === "economic" ? "Economy" : "Tech"}
+            {f.label}
           </button>
         ))}
 
         <Link
           href="/politics"
-          className="px-3 py-1.5 rounded-md text-xs font-medium text-[var(--text-tertiary)] hover:text-[var(--text-secondary)] hover:bg-[var(--bg-card)] transition-colors"
+          className="px-3 py-1.5 rounded-md text-[11px] font-medium uppercase tracking-wider text-[var(--text-label)] hover:text-[var(--text-secondary)] hover:bg-[var(--bg-card)] transition-colors"
         >
           Politics
         </Link>
       </div>
 
       {/* Count */}
-      <p className="text-xs text-[var(--text-label)]">
-        {sorted.length} predictions
+      <p className="text-[11px] text-[var(--text-label)]">
+        {sorted.length} prediction{sorted.length !== 1 ? "s" : ""}
       </p>
 
       {/* Grid */}
       {sorted.length === 0 ? (
-        <div className="text-center py-16">
+        <div className="text-center py-20">
           <p className="text-[var(--text-tertiary)] text-sm">
             No predictions yet. Run the cron job to start generating predictions.
           </p>

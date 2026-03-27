@@ -17,7 +17,7 @@ export default function DomainNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex items-center gap-1 overflow-x-auto scrollbar-hide">
+    <nav className="flex items-center gap-0.5 overflow-x-auto scrollbar-hide -mb-px">
       {DOMAINS.map((domain) => {
         const isActive =
           domain.href === "/"
@@ -28,15 +28,15 @@ export default function DomainNav() {
           <Link
             key={domain.href}
             href={domain.href}
-            className={`px-3 py-1.5 text-xs font-medium whitespace-nowrap transition-colors relative ${
+            className={`relative px-3 py-2.5 text-[11px] font-medium uppercase tracking-wider whitespace-nowrap transition-colors ${
               isActive
                 ? "text-[var(--text-primary)]"
-                : "text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]"
+                : "text-[var(--text-label)] hover:text-[var(--text-secondary)]"
             }`}
           >
             {domain.label}
             {isActive && (
-              <span className="absolute bottom-0 left-1 right-1 h-[2px] bg-[var(--accent-purple)] rounded-full" />
+              <span className="absolute bottom-0 left-2 right-2 h-[2px] bg-[var(--accent-purple)] rounded-full" />
             )}
           </Link>
         );
