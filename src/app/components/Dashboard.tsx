@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import PredictionCard from "./PredictionCard";
 import ScoreHistory from "./ScoreHistory";
-import ImpactPanel from "./ImpactPanel";
 import ShareButton from "./ShareButton";
 
 interface Candidate {
@@ -212,24 +211,6 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Personal impact */}
-      <div className="bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-xl p-5 space-y-4">
-        <div className="space-y-1">
-          <h3 className="text-xs uppercase tracking-wider text-[var(--text-label)] font-semibold">
-            Personal Impact Analysis
-          </h3>
-          <p className="text-xs text-[var(--text-tertiary)]">
-            How this election outcome could affect your career and industry
-          </p>
-        </div>
-        <ImpactPanel
-          candidates={candidates.map((c) => ({
-            name: c.name,
-            winProbability:
-              predictions.get(c.id)?.win_probability ?? 0.5,
-          }))}
-        />
-      </div>
     </div>
   );
 }

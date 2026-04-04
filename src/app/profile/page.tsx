@@ -1,5 +1,4 @@
 import AppShell from "../components/AppShell";
-import OracleScore from "../components/OracleScore";
 import ProfileEditor from "../components/ProfileEditor";
 
 export default function ProfilePage() {
@@ -26,7 +25,7 @@ export default function ProfilePage() {
             Oracle Score
           </h3>
           <div className="glass-card rounded-xl p-6">
-            <OracleScore />
+            <p className="text-sm text-[var(--text-tertiary)]">Tournament rank coming soon</p>
           </div>
         </div>
 

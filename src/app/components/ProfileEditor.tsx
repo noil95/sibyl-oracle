@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { recordProfileComplete } from "@/lib/gamification/oracle-score";
-
 const STORAGE_KEY = "sibyl-oracle-profile";
 
 interface UserProfile {
@@ -46,8 +44,7 @@ function getProfile(): UserProfile {
 function saveProfile(profile: UserProfile) {
   if (typeof window === "undefined") return;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
-  const filled = [profile.displayName, profile.industry, profile.city].filter(Boolean).length;
-  if (filled >= 3) recordProfileComplete();
+  // profile completion tracking removed with gamification module
 }
 
 export default function ProfileEditor() {

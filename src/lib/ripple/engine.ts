@@ -1,8 +1,6 @@
 // Ripple Engine — calculates cause-and-effect prediction chains
 // Takes a chain definition + live prediction scores, outputs downstream deltas
 
-import rippleChainsData from "./data/ripple-chains.json";
-
 function clamp(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value));
 }
@@ -61,7 +59,7 @@ export interface LivePrediction {
 // ── Chain Loading ──
 
 export function getAllChains(): ChainConfig[] {
-  return (rippleChainsData as unknown as { chains: ChainConfig[] }).chains;
+  return [];
 }
 
 export function getChainById(chainId: string): ChainConfig | undefined {

@@ -272,3 +272,220 @@ export async function updateProfile(
   if (error) throw error;
   return data;
 }
+
+// ── Tournaments ──
+
+export async function getOpenTournaments() {
+  const { data, error } = await supabaseAdmin
+    .from("tournaments")
+    .select("*")
+    .eq("status", "open")
+    .order("closes_at", { ascending: true });
+  if (error) throw error;
+  return data;
+}
+
+export async function getTournamentById(id: string) {
+  const { data, error } = await supabaseAdmin
+    .from("tournaments")
+    .select("*")
+    .eq("id", id)
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function submitPrediction(
+  tournamentId: string,
+  userId: string,
+  probability: number
+) {
+  const { data, error } = await supabaseAdmin
+    .from("user_predictions")
+    .upsert(
+      { tournament_id: tournamentId, user_id: userId, predicted_probability: probability },
+      { onConflict: "tournament_id,user_id" }
+    )
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function getTournamentPredictions(tournamentId: string) {
+  const { data, error } = await supabaseAdmin
+    .from("user_predictions")
+    .select("*")
+    .eq("tournament_id", tournamentId);
+  if (error) throw error;
+  return data;
+}
+
+export async function resolveTournament(
+  tournamentId: string,
+  resolution: string
+) {
+  const { error } = await supabaseAdmin
+    .from("tournaments")
+    .update({ status: "resolved", resolution })
+    .eq("id", tournamentId);
+  if (error) throw error;
+}
+
+// ── Leaderboard ──
+
+export async function getLeaderboard(limit = 50) {
+  const { data, error } = await supabaseAdmin
+    .from("leaderboard")
+    .select("*")
+    .order("total_brier_sum", { ascending: true })
+    .limit(limit);
+  if (error) throw error;
+  return data;
+}
+
+export async function upsertLeaderboardEntry(
+  userId: string,
+  brierScore: number,
+  displayName?: string
+) {
+  // First try to get existing
+  const { data: existing } = await supabaseAdmin
+    .from("leaderboard")
+    .select("*")
+    .eq("user_id", userId)
+    .single();
+
+  const totalBrier = (existing?.total_brier_sum ?? 0) + brierScore;
+  const totalResolved = (existing?.total_resolved ?? 0) + 1;
+  const totalPredictions = (existing?.total_predictions ?? 0) + 1;
+
+  // Determine rank
+  let rankTitle = "Novice";
+  if (totalPredictions >= 100) rankTitle = "Oracle";
+  else if (totalPredictions >= 50) rankTitle = "Strategist";
+  else if (totalPredictions >= 10) rankTitle = "Analyst";
+
+  const { error } = await supabaseAdmin
+    .from("leaderboard")
+    .upsert({
+      user_id: userId,
+      display_name: displayName ?? existing?.display_name,
+      total_predictions: totalPredictions,
+      total_brier_sum: totalBrier,
+      total_resolved: totalResolved,
+      rank_title: rankTitle,
+      updated_at: new Date().toISOString(),
+    });
+  if (error) throw error;
+}
+
+// ── Prediction Relationships ──
+
+export async function getPredictionRelationships() {
+  const { data, error } = await supabaseAdmin
+    .from("prediction_relationships")
+    .select("*");
+  if (error) throw error;
+  return data;
+}
+
+export async function getRelationshipsForSlug(slug: string) {
+  const { data, error } = await supabaseAdmin
+    .from("prediction_relationships")
+    .select("*")
+    .or(`source_slug.eq.${slug},target_slug.eq.${slug}`);
+  if (error) throw error;
+  return data;
+}
+
+// ── Replay Commentary ──
+
+export async function getCachedCommentary(predictionSlug: string) {
+  const { data, error } = await supabaseAdmin
+    .from("replay_commentary")
+    .select("*")
+    .eq("prediction_slug", predictionSlug)
+    .order("timestamp", { ascending: true });
+  if (error) throw error;
+  return data;
+}
+
+export async function insertCommentary(
+  predictionSlug: string,
+  timestamp: string,
+  signalSnapshot: unknown,
+  commentary: string
+) {
+  const { error } = await supabaseAdmin
+    .from("replay_commentary")
+    .insert({
+      prediction_slug: predictionSlug,
+      timestamp,
+      signal_snapshot: signalSnapshot,
+      commentary,
+    });
+  if (error) throw error;
+}
+
+// ── Watched Sources ──
+
+export async function getWatchedSources(userId: string) {
+  const { data, error } = await supabaseAdmin
+    .from("watched_sources")
+    .select("*")
+    .eq("user_id", userId);
+  if (error) throw error;
+  return data;
+}
+
+export async function addWatchedSource(
+  userId: string,
+  predictionSlug: string,
+  sourceUrl: string,
+  sourceType: string
+) {
+  // Check user limit (max 5)
+  const existing = await getWatchedSources(userId);
+  if (existing.length >= 5) {
+    throw new Error("Maximum 5 watched sources per user");
+  }
+
+  // Check system limit (max 100)
+  const { count } = await supabaseAdmin
+    .from("watched_sources")
+    .select("*", { count: "exact", head: true });
+  if ((count ?? 0) >= 100) {
+    throw new Error("System source limit reached");
+  }
+
+  const { data, error } = await supabaseAdmin
+    .from("watched_sources")
+    .insert({ user_id: userId, prediction_slug: predictionSlug, source_url: sourceUrl, source_type: sourceType })
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function removeWatchedSource(id: string, userId: string) {
+  const { error } = await supabaseAdmin
+    .from("watched_sources")
+    .delete()
+    .eq("id", id)
+    .eq("user_id", userId);
+  if (error) throw error;
+}
+
+// ── Signals by source (for Lens View) ──
+
+export async function getSignalsBySource(predictionTypeId: string) {
+  const { data, error } = await supabaseAdmin
+    .from("signals")
+    .select("*")
+    .eq("prediction_type_id", predictionTypeId)
+    .order("fetched_at", { ascending: false })
+    .limit(50);
+  if (error) throw error;
+  return data;
+}

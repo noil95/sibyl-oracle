@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 interface GenericPredictionCardProps {
   name: string;
   slug: string;
@@ -24,6 +26,7 @@ const domainConfig = {
 
 export default function GenericPredictionCard({
   name,
+  slug,
   score,
   direction,
   confidence,
@@ -100,6 +103,19 @@ export default function GenericPredictionCard({
           <span className="text-[22px] font-bold text-white number-display score-animate">
             {pct}<span className="text-[12px] text-[var(--text-tertiary)] ml-0.5">¢</span>
           </span>
+        </div>
+
+        {/* Action links */}
+        <div className="flex items-center gap-3 mt-3 pt-3 border-t border-[var(--border-primary)]">
+          <Link href={`/fork/${slug}`} className="text-[11px] text-violet-400 hover:text-violet-300 transition-colors">
+            What if?
+          </Link>
+          <Link href={`/replay/${slug}`} className="text-[11px] text-[var(--text-tertiary)] hover:text-[var(--text-secondary)] transition-colors">
+            Replay
+          </Link>
+          <Link href={`/lens?slug=${slug}`} className="text-[11px] text-[var(--text-tertiary)] hover:text-[var(--text-secondary)] transition-colors">
+            Sources
+          </Link>
         </div>
       </div>
     </div>
